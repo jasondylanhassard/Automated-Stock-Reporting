@@ -5,7 +5,7 @@ STOCKS = [
     "IVV",
     "VTI",
     "VGS.AX",
-    "PMGOLD"
+    "PMGOLD.AX"
 ]
 
 # ── EMAIL SETTINGS ────────────────────────────────────────
