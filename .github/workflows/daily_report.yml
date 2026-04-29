@@ -3,7 +3,6 @@ name: Daily Stock Report
 on:
   schedule:
     - cron: '0 0 * * *'   # 10am AEST = midnight UTC
-    - cron: '0 10 * * *'  # 8pm AEST = 10am UTC
   workflow_dispatch:        # allows manual trigger too
 
 jobs:
