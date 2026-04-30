@@ -6,72 +6,72 @@ from datetime import datetime
 
 def format_change(value):
     if value is None:
-        return "N/A"
+        return "<td style='color:gray'>N/A</td>"
+    color = "#00c853" if value >= 0 else "#d50000"
     arrow = "▲" if value >= 0 else "▼"
-    return f"{arrow} {abs(value):.2f}%"
+    return f"<td style='color:{color};text-align:center'>{arrow} {abs(value):.2f}%</td>"
 
 def format_price(value):
     if value is None or value == 0:
-        return "N/A"
-    return f"${value:.2f}"
+        return "<td style='text-align:center'>N/A</td>"
+    return f"<td style='text-align:center'>${value:.2f}</td>"
 
 def build_email_body(results):
     now = datetime.now().strftime("%A %d %B %Y")
-    body = f"📈 DAILY STOCK REPORT — {now}\n\n"
 
-    # Column headers
-    col_ticker  = 10
-    col_price   = 10
-    col_1d      = 10
-    col_1w      = 10
-    col_1m      = 10
-    col_3m      = 10
-    col_52h     = 12
-    col_52l     = 12
+    html = f"""
+    <html>
+    <body style="font-family: monospace; background-color: #f4f4f4; padding: 20px;">
+        <h2 style="color: #333;">📈 Daily Stock Report — {now}</h2>
+        <table style="border-collapse: collapse; width: 100%; background: white; border-radius: 8px; overflow: hidden;">
+            <thead>
+                <tr style="background-color: #1a1a2e; color: white;">
+                    <th style="padding: 12px 16px; text-align:left">TICKER</th>
+                    <th style="padding: 12px 16px; text-align:center">PRICE</th>
+                    <th style="padding: 12px 16px; text-align:center">24HR</th>
+                    <th style="padding: 12px 16px; text-align:center">1 WEEK</th>
+                    <th style="padding: 12px 16px; text-align:center">1 MONTH</th>
+                    <th style="padding: 12px 16px; text-align:center">3 MONTH</th>
+                    <th style="padding: 12px 16px; text-align:center">52W HIGH</th>
+                    <th style="padding: 12px 16px; text-align:center">52W LOW</th>
+                </tr>
+            </thead>
+            <tbody>
+    """
 
-    header = (
-        f"{'TICKER':<{col_ticker}}"
-        f"{'PRICE':>{col_price}}"
-        f"{'24HR':>{col_1d}}"
-        f"{'1 WEEK':>{col_1w}}"
-        f"{'1 MONTH':>{col_1m}}"
-        f"{'3 MONTH':>{col_3m}}"
-        f"{'52W HIGH':>{col_52h}}"
-        f"{'52W LOW':>{col_52l}}"
-    )
+    for i, r in enumerate(results):
+        bg = "#f9f9f9" if i % 2 == 0 else "#ffffff"
+        html += f"""
+            <tr style="background-color:{bg};">
+                <td style="padding: 10px 16px; font-weight:bold;">{r['ticker']}</td>
+                {format_price(r['current_price'])}
+                {format_change(r['change_1d'])}
+                {format_change(r['change_1w'])}
+                {format_change(r['change_1m'])}
+                {format_change(r['change_3m'])}
+                {format_price(r['52w_high'])}
+                {format_price(r['52w_low'])}
+            </tr>
+        """
 
-    divider = "-" * len(header)
+    html += """
+            </tbody>
+        </table>
+    </body>
+    </html>
+    """
 
-    body += divider + "\n"
-    body += header + "\n"
-    body += divider + "\n"
-
-    for r in results:
-        row = (
-            f"{r['ticker']:<{col_ticker}}"
-            f"{format_price(r['current_price']):>{col_price}}"
-            f"{format_change(r['change_1d']):>{col_1d}}"
-            f"{format_change(r['change_1w']):>{col_1w}}"
-            f"{format_change(r['change_1m']):>{col_1m}}"
-            f"{format_change(r['change_3m']):>{col_3m}}"
-            f"{format_price(r['52w_high']):>{col_52h}}"
-            f"{format_price(r['52w_low']):>{col_52l}}"
-        )
-        body += row + "\n"
-
-    body += divider + "\n"
-    return body
+    return html
 
 def send_email(results):
     print("Building email...")
     body = build_email_body(results)
-    print(body)
 
-    msg = MIMEMultipart()
+    msg = MIMEMultipart("alternative")
     msg["From"] = EMAIL_SENDER
     msg["To"] = ", ".join(EMAIL_RECEIVER)
     msg["Subject"] = "📈 Daily Stock Report"
-    msg.attach(MIMEText(body, "plain"))
+    msg.attach(MIMEText(body, "html"))
 
     print("Connecting to Gmail...")
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
