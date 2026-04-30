@@ -9,12 +9,7 @@ def fetch_stock_data(ticker):
     hist = stock.history(period="1y")
 
     # More robust price fetching for ASX stocks
-    current_price = (
-        info.get("currentPrice") or
-        info.get("regularMarketPrice") or
-        info.get("navPrice") or
-        (hist["Close"].iloc[-1] if len(hist) > 0 else None)
-    )
+    current_price = hist["Close"].iloc[-1] if len(hist) > 0 else None
 
     week_high = info.get("fiftyTwoWeekHigh") or (hist["Close"].max() if len(hist) > 0 else None)
     week_low = info.get("fiftyTwoWeekLow") or (hist["Close"].min() if len(hist) > 0 else None)
