@@ -5,13 +5,23 @@ STOCKS = [
     "IVV",
     "VTI",
     "VGS.AX",
-    "PMGOLD.AX"
+    "VAS.AX",
+    "VTS.AX",
+    "MIN.AX",
+    "NVDA",
+    "PLS.AX",
+    "LRV.AX",
+    "PLTR",
+    "TOPT",
+    "TSM",
+    "VTM.AX",
+    "PMGOLD.AX",
 ]
 
 # ── EMAIL SETTINGS ────────────────────────────────────────
 EMAIL_SENDER = os.environ.get("EMAIL_SENDER", "jasondylanhassard@gmail.com")
 EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD", "toftrkkbazgwycof")
-EMAIL_RECEIVER = os.environ.get("EMAIL_RECEIVER", "jasondylanhassard@gmail.com,matthewbrosnan8@gmail.com").split(",")
+EMAIL_RECEIVER = os.environ.get("EMAIL_RECEIVER", "jasondylanhassard@gmail.com").split(",")
 
 # ── SCORING THRESHOLDS ────────────────────────────────────
 PE_LOW = 20
