@@ -18,7 +18,7 @@ jobs:
           python-version: '3.10'
 
       - name: Install dependencies
-        run: pip install yfinance schedule requests
+        run: pip install yfinance schedule requests streamlit plotly pandas
 
       - name: Run stock report
         env:
