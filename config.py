@@ -32,3 +32,8 @@ WEEK_LOW_THRESHOLD = 0.3
 WEEK_HIGH_THRESHOLD = 0.8
 BUY_SCORE = 4
 HOLD_SCORE = 2
+
+
+GITHUB_TOKEN = os.environ.get("DB_TOKEN", "your_token_here")
+GITHUB_REPO = "jasondylanhassard/Automated-Stock-Reporting"
+GITHUB_FILE = "portfolio.csv"
