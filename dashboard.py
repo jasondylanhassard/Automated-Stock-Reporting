@@ -27,6 +27,8 @@ if st.sidebar.button("Add Position"):
     if buy_price > 0 and quantity > 0:
         add_position(ticker_input, str(buy_date), buy_price, quantity)
         st.sidebar.success(f"Added {ticker_input}!")
+        st.write("DEBUG — Current portfolio:")
+        st.write(load_portfolio())
         st.rerun()
     else:
         st.sidebar.error("Please enter a valid price and quantity")
