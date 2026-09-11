@@ -23,9 +23,19 @@ HEADERS = {
 def get_file_from_github():
     url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{GITHUB_FILE}"
     response = requests.get(url, headers=HEADERS)
-    if response.status_code == 404:
-        return pd.DataFrame(columns=COLUMNS), None
+    
+    print(f"GitHub API status: {response.status_code}")
+    
     data = response.json()
+    
+    if response.status_code == 404:
+        print("Portfolio file not found on GitHub, starting fresh")
+        return pd.DataFrame(columns=COLUMNS), None
+    
+    if "content" not in data:
+        print(f"GitHub API error: {data.get('message', 'Unknown error')}")
+        return pd.DataFrame(columns=COLUMNS), None
+    
     content = base64.b64decode(data["content"]).decode("utf-8")
     df = pd.read_csv(io.StringIO(content))
     return df, data["sha"]
