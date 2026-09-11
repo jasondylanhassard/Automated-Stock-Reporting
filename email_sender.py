@@ -171,6 +171,19 @@ def build_email_body(results):
 
     html += build_portfolio_section(results)
 
+    from config import DASHBOARD_URL
+
+    html += f"""
+    <div style="margin-top:30px;text-align:center;padding-bottom:30px;">
+        <a href="{DASHBOARD_URL}" 
+        style="background-color:#1a1a2e;color:white;padding:14px 28px;
+                  text-decoration:none;border-radius:8px;font-size:16px;
+                  font-weight:bold;">
+            📊 Manage Portfolio →
+        </a>
+    </div>
+    """
+
     html += """
     </body>
     </html>

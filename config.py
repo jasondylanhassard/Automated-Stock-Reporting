@@ -37,3 +37,4 @@ HOLD_SCORE = 2
 GITHUB_TOKEN = os.environ.get("DB_TOKEN", "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")
 GITHUB_REPO = "jasondylanhassard/Automated-Stock-Reporting"
 GITHUB_FILE = "portfolio.csv"
+DASHBOARD_URL = "https://automated-stock-reporting-5ssvjzmxpdnktrhiommmz5.streamlit.app/"
