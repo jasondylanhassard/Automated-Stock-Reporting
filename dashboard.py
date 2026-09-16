@@ -81,7 +81,7 @@ else:
         return ""
 
     st.dataframe(
-        display_df.style.applymap(color_pnl, subset=["P&L $", "P&L %"]),
+        display_df.style.map(color_pnl, subset=["P&L $", "P&L %"]),
         use_container_width=True
     )
 
